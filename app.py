@@ -50,7 +50,7 @@ def init_db():
 USERS = {
     # ==================== BOD ====================
     "truongkhuong@dieutuongam.com": {"name": "TRƯƠNG HUỆ KHƯƠNG",           "role": "BOD",       "department": "BOD",                                   "password": "123456"},
-    "uthue.dta@gmail.com":          {"name": "NGUYỄN THỊ HUỆ",              "role": "BOD",       "department": "BOD",                                   "password": "123456"},
+     "hongtuyet@dieutuongam.com": {"name": "NGUYỄN THỊ HỒNG TUYẾT", "role": "BOD", "department": "BOD", "password": "123456"},
 
     # ==================== PHÒNG HCNS-IT ====================
     "it@dieutuongam.com":           {"name": "TRẦN CÔNG KHÁNH",             "role": "Manager",   "department": "PHÒNG HCNS-IT",                         "password": "123456"},
@@ -65,11 +65,9 @@ USERS = {
     # ==================== PHÒNG KINH DOANH HCM ====================
     "xuanhoa@dieutuongam.com":      {"name": "LÊ XUÂN HOA",                 "role": "Manager",   "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
     "salesadmin@dieutuongam.com":   {"name": "NGUYỄN DUY ANH",              "role": "Employee",  "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
-    "hatrang@dieutuongam.com":      {"name": "PHẠM HÀ TRANG",               "role": "Employee",  "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
-    "hongtuyet@dieutuongam.com":    {"name": "NGUYỄN THỊ HỒNG TUYẾT",       "role": "Employee",  "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
     "kho@dieutuongam.com":          {"name": "HUỲNH MINH TOÀN",             "role": "Employee",  "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
     "thoainha@dieutuongam.com":     {"name": "TRẦN THOẠI NHÃ",              "role": "Employee",  "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
-    "troly@dieutuongam.com":        {"name": "NGUYỄN NGỌC DUY",             "role": "Employee",  "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
+    "hotro-kythuat@dieutuongam.com":{"name": "ĐỖ BÌNH TRỌNG", "role": "Manager", "department": "PHÒNG KINH DOANH HCM", "password": "123456"},
     "thanhtuan.dta@gmail.com":      {"name": "BÀNH THANH TUẤN",             "role": "Employee",  "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
     "thientinh.dta@gmail.com":      {"name": "BÙI THIỆN TÌNH",              "role": "Employee",  "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
     "giathanh.dta@gmail.com":       {"name": "NGÔ GIA THÀNH",               "role": "Employee",  "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
@@ -86,13 +84,14 @@ USERS = {
     "mydung.dta@gmail.com":         {"name": "HOÀNG THỊ MỸ DUNG",           "role": "Employee",  "department": "PHÒNG KINH DOANH HN",                   "password": "123456"},
 
     # ==================== PHÒNG TRUYỀN THÔNG & MARKETING ====================
-    "marketing@dieutuongam.com":    {"name": "TUYỀN HUỲNH",                 "role": "Manager",   "department": "PHÒNG TRUYỀN THÔNG & MARKETING",         "password": "123456"},
+    "marketing@dieutuongam.com":    {"name": "HUỲNH THỊ BÍCH TUYỀN",                 "role": "Manager",   "department": "PHÒNG TRUYỀN THÔNG & MARKETING",         "password": "123456"},
     "hotro-kythuat@dieutuongam.com":{"name": "ĐỖ BÌNH TRỌNG",            "role": "Manager",   "department": "PHÒNG TRUYỀN THÔNG & MARKETING",         "password": "123456"},
-    "ngocloi.dta@gmail.com":        {"name": "LÊ NGỌC LỢI",                 "role": "Employee",  "department": "PHÒNG TRUYỀN THÔNG & MARKETING",         "password": "123456"},
     "lehong.dta@gmail.com":         {"name": "LÊ THỊ HỒNG",                 "role": "Employee",  "department": "PHÒNG TRUYỀN THÔNG & MARKETING",         "password": "123456"},
+    "uthue.dta@gmail.com": {"name": "NGUYỄN THỊ HUỆ", "role": "Manager", "department": "PHÒNG KINH DOANH HN", "password": "123456"},
 
     # ==================== PHÒNG KẾ HOẠCH TỔNG HỢP ====================
     "lehuyen@dieutuongam.com":      {"name": "NGUYỄN THỊ LỆ HUYỀN",         "role": "Manager",   "department": "PHÒNG KẾ HOẠCH TỔNG HỢP",               "password": "123456"},
+    "hatrang@dieutuongam.com": {"name": "PHẠM HÀ TRANG", "role": "Employee", "department": "PHÒNG KẾ HOẠCH TỔNG HỢP", "password": "123456"},
 
     # ==================== PHÒNG SÁNG TẠO TỔNG HỢP ====================
     "thietke@dieutuongam.com":      {"name": "ĐẶNG THỊ MINH THÙY",          "role": "Manager",   "department": "PHÒNG SÁNG TẠO TỔNG HỢP",                "password": "123456"},
