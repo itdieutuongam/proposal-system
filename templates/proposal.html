@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đề xuất / Đề nghị - DTA SPACE</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 20px; }
+        .container { max-width: 1100px; margin: auto; background: white; border-radius: 12px; padding: 30px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #1976d2; padding-bottom: 15px; margin-bottom: 25px; }
+        .header h1 { margin: 0; color: #1976d2; font-size: 26px; }
+        .header small { font-size: 16px; color: #555; }
+        .user-info { text-align: right; font-size: 15px; }
+        .logout { color: #d32f2f; font-weight: bold; text-decoration: none; }
+
+        .alert { padding: 14px 18px; margin: 15px 0; border-radius: 8px; border-left: 6px solid; font-weight: 500; }
+        .alert-success { background:#d4edda; border-left-color:#28a745; color:#155724; }
+        .alert-danger  { background:#f8d7da; border-left-color:#dc3545; color:#721c24; }
+        .alert-warning { background:#fff3cd; border-left-color:#ffc107; color:#856404; }
+        .alert-info    { background:#d1ecf1; border-left-color:#17a2b8; color:#0c5460; }
+
+        label { display: block; margin: 18px 0 6px; font-weight: bold; color: #333; }
+        input, select, textarea { width: 100%; padding: 11px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 15px; }
+        textarea { min-height: 130px; resize: vertical; }
+        input:disabled { background: #f8f9fa; color: #555; }
+
+        table { width: 100%; border-collapse: collapse; margin: 25px 0; background: #fff; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+        th { background: #1976d2; color: white; font-weight: bold; }
+        .btn { padding: 10px 18px; margin: 8px 5px 0 0; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #1976d2; color: white; font-weight: bold; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-danger { background: #dc3545; color: white; padding: 6px 10px; font-size: 13px; }
+
+        .grand-total { font-size: 1.5em; font-weight: bold; color: #1976d2; text-align: right; margin: 25px 0; padding: 15px; background: #f0f8ff; border-radius: 8px; }
+        
+        .file-upload { margin: 20px 0; padding: 15px; border: 2px dashed #1976d2; border-radius: 8px; text-align: center; background: #f8fbff; }
+        .file-upload input[type="file"] { margin-top: 10px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>HỆ THỐNG ĐỀ XUẤT / ĐỀ NGHỊ<br><small>CÔNG TY CỔ PHẦN DTA SPACE</small></h1>
+        <div class="user-info">
+            Xin chào <strong>{{ user.name }}</strong> ({{ user.role }})<br>
+            <a href="{{ url_for('dashboard') }}">Trang chủ</a> |
+            <a href="{{ url_for('logout') }}" class="logout">Đăng xuất</a>
+        </div>
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" enctype="multipart/form-data">
+        <label>Ngày lập:</label>
+        <input type="text" value="{{ today }}" disabled>
+
+        <label>Người lập:</label>
+        <input type="text" value="{{ user.name }}" disabled>
+
+        <label>Phòng ban:</label>
+        <select name="department" required>
+            <option value="">-- Chọn phòng ban --</option>
+            {% for dept in departments %}
+            <option value="{{ dept }}" {% if dept == user.department %}selected{% endif %}>{{ dept }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Thành phố áp dụng <span style="color:red;">*</span>:</label>
+        <select name="city" required style="padding: 12px; font-size: 16px;">
+            <option value="" disabled selected>-- Chọn thành phố --</option>
+            <option value="HÀ NỘI">HÀ NỘI</option>
+            <option value="HỒ CHÍ MINH">HỒ CHÍ MINH</option>
+        </select>
+            
+        <label>Tiêu đề đề xuất:</label>
+        <input type="text" name="title" placeholder="Ví dụ: Đề xuất mua máy in mới cho phòng HCNS" required>
+
+        <label>Loại đề xuất:</label>
+        <select name="type" required>
+            <option value="">-- Chọn loại --</option>
+            <option value="Văn phòng">Văn phòng phẩm / Thiết bị</option>
+            <option value="Dự án">Dự án / Hợp đồng</option>
+            <option value="Khác">Khác</option>
+        </select>
+
+        <label>Nguồn kinh phí <span style="color:red;">*</span></label>
+        <select name="nguon_kinh_phi" required>
+            <option value="" disabled selected>-- Chọn nguồn --</option>
+            {% for item in nguon_kinh_phi_list %}
+            <option value="{{ item }}">{{ item }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Nội dung chi tiết:</label>
+        <textarea name="content" placeholder="Mô tả rõ lý do, mục đích, lợi ích, kế hoạch thực hiện, thời gian..." required></textarea>
+
+        <label>Người phê duyệt tiếp theo:</label>
+        <select name="approver" required>
+            <option value="" disabled selected>-- Chọn người duyệt --</option>
+            {% for approver in approvers %}
+            <option value="{{ approver }}">{{ approver }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- CHI PHÍ ĐỀ XUẤT -->
+        <h3 style="margin-top: 30px; color: #1976d2;">Chi phí đề xuất (nếu có)</h3>
+        <table id="costTable">
+            <tr>
+                <th width="5%">STT</th>
+                <th width="35%">Hạng mục</th>
+                <th width="15%">Số lượng</th>
+                <th width="20%">Đơn giá (VND)</th>
+                <th width="20%">Thành tiền</th>
+                <th width="5%">Xóa</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td><input type="text" name="item[]"></td>
+                <td><input type="number" name="qty[]" value="1" min="1" class="qty"></td>
+                <td><input type="number" name="price[]" value="0" min="0" class="price"></td>
+                <td class="total">0</td>
+                <td><button type="button" class="btn btn-danger remove">X</button></td>
+            </tr>
+        </table>
+        <button type="button" id="addRow" class="btn btn-secondary">+ Thêm dòng chi phí</button>
+
+        <div class="grand-total">
+            Tổng cộng: <span id="grandTotal">0</span> VND
+            <!-- THÊM DÒNG NÀY ĐỂ GỬI TỔNG TIỀN LÊN SERVER -->
+            <input type="hidden" name="total_cost" id="totalCostInput" value="0">
+        </div>
+
+        <!-- ĐÍNH KÈM TỆP -->
+        <div class="file-upload">
+            <h3>Đính kèm tệp (nếu có)</h3>
+            <p>Hỗ trợ: PDF, Word, Excel, hình ảnh (tối đa 16MB)</p>
+            <input type="file" name="attachment" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png">
+        </div>
+
+        <!-- NÚT GỬI -->
+        <div style="text-align: center; margin: 40px 0;">
+            <button type="submit" class="btn btn-primary" style="padding: 14px 40px; font-size: 17px;">
+                Gửi & Chuyển duyệt
+            </button>
+            <button type="reset" class="btn btn-secondary" style="padding: 14px 30px; font-size: 16px;">
+                Làm mới form
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+function updateTotal() {
+    let total = 0;
+    $('#costTable tr:gt(0)').each(function() {
+        const qty = parseFloat($(this).find('.qty').val()) || 0;
+        const price = parseFloat($(this).find('.price').val()) || 0;
+        const lineTotal = qty * price;
+        $(this).find('.total').text(lineTotal.toLocaleString('vi-VN'));
+        total += lineTotal;
+    });
+    $('#grandTotal').text(total.toLocaleString('vi-VN'));
+    $('#totalCostInput').val(total);  // ← GỬI TỔNG TIỀN LÊN SERVER
+}
+
+$(document).on('input', '.qty, .price', updateTotal);
+
+$('#addRow').click(function() {
+    const rowNum = $('#costTable tr').length;
+    $('#costTable').append(`
+        <tr>
+            <td>${rowNum}</td>
+            <td><input type="text" name="item[]"></td>
+            <td><input type="number" name="qty[]" value="1" min="1" class="qty"></td>
+            <td><input type="number" name="price[]" value="0" min="0" class="price"></td>
+            <td class="total">0</td>
+            <td><button type="button" class="btn btn-danger remove">X</button></td>
+        </tr>
+    `);
+    updateTotal();
+});
+
+$(document).on('click', '.remove', function() {
+    $(this).closest('tr').remove();
+    $('#costTable tr:gt(0)').each(function(i) {
+        $(this).find('td:first').text(i + 1);
+    });
+    updateTotal();
+});
+
+$(document).ready(function() {
+    updateTotal();
+});
+</script>
+</body>
+</html>
