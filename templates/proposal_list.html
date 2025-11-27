@@ -73,10 +73,13 @@
                     {% else %}—{% endif %}
                 </td>
                 <td>
-                    {% if p[11] == 'Đã duyệt' %}<span class="status-duyet">Đã duyệt</span>
-                    {% elif p[11] == 'Từ chối' %}<span class="status-tuchoi">Từ chối</span>
-                    {% elif p[11] == 'Chờ duyệt cấp 2' %}<span style="color:#ff6f00; font-weight:bold;">Chờ duyệt cấp 2</span>
-                    {% else %}<span class="status-cho">Chờ duyệt</span>{% endif %}
+                    {% if p[11] == 'Đã duyệt' %}
+                        <span class="status-duyet">Đã duyệt</span>
+                    {% elif p[11] == 'Từ chối' %}
+                        <span class="status-tuchoi">Từ chối</span>
+                    {% else %}
+                        <span class="status-cho">Chờ duyệt</span>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
@@ -123,10 +126,13 @@
                     {% else %}—{% endif %}
                 </td>
                 <td>
-                    {% if p[11] == 'Đã duyệt' %}<span class="status-duyet">Đã duyệt</span>
-                    {% elif p[11] == 'Từ chối' %}<span class="status-tuchoi">Từ chối</span>
-                    {% elif p[11] == 'Chờ duyệt cấp 2' %}<span style="color:#ff6f00; font-weight:bold;">Chờ duyệt cấp 2</span>
-                    {% else %}<span class="status-cho">Chờ duyệt</span>{% endif %}
+                    {% if p[11] == 'Đã duyệt' %}
+                        <span class="status-duyet">Đã duyệt</span>
+                    {% elif p[11] == 'Từ chối' %}
+                        <span class="status-tuchoi">Từ chối</span>
+                    {% else %}
+                        <span class="status-cho">Chờ duyệt</span>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
@@ -173,10 +179,13 @@
                     {% else %}—{% endif %}
                 </td>
                 <td>
-                    {% if p[11] == 'Đã duyệt' %}<span class="status-duyet">Đã duyệt</span>
-                    {% elif p[11] == 'Từ chối' %}<span class="status-tuchoi">Từ chối</span>
-                    {% elif p[11] == 'Chờ duyệt cấp 2' %}<span style="color:#ff6f00; font-weight:bold;">Chờ duyệt cấp 2</span>
-                    {% else %}<span class="status-cho">Chờ duyệt</span>{% endif %}
+                    {% if p[11] == 'Đã duyệt' %}
+                        <span class="status-duyet">Đã duyệt</span>
+                    {% elif p[11] == 'Từ chối' %}
+                        <span class="status-tuchoi">Từ chối</span>
+                    {% else %}
+                        <span class="status-cho">Chờ duyệt</span>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

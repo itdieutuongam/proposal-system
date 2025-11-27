@@ -247,13 +247,15 @@ def approve(prop_id):
         return redirect(url_for("dashboard"))
 
     my_full = f"{user['name']} - {user['department']}"
-    current_approver = proposal[7]
+    original_approver = proposal[7]   # Người được chọn lúc tạo đề xuất
     next_approver = proposal[14] if len(proposal) > 14 else None
     status = proposal[11]
 
-    # Kiểm tra quyền duyệt
-    if current_approver != my_full and next_approver != my_full:
-        flash("Bạn không phải người được phân công duyệt đề xuất này!", "danger")
+    # Xác định người đang được phân công duyệt hiện tại
+    current_turn = next_approver if next_approver else original_approver
+
+    if current_turn != my_full:
+        flash("Chưa đến lượt bạn duyệt đề xuất này!", "danger")
         conn.close()
         return redirect(url_for("dashboard"))
 
@@ -265,28 +267,45 @@ def approve(prop_id):
             c.execute("UPDATE proposals SET status = 'Từ chối', next_approver = NULL WHERE id = ?", (prop_id,))
             conn.commit()
             flash(f"Đề xuất #{prop_id} đã bị TỪ CHỐI!", "danger")
+
         elif decision == "approve":
-            if status == "Chờ duyệt cấp 2" or next_approver:
+            # Nếu người hiện tại là BOD → kết thúc luôn
+            if user["role"] == "BOD":
                 c.execute("UPDATE proposals SET status = 'Đã duyệt', next_approver = NULL WHERE id = ?", (prop_id,))
                 conn.commit()
-                flash(f"Đề xuất #{prop_id} đã được DUYỆT HOÀN TẤT!", "success")
+                flash(f"BOD đã DUYỆT HOÀN TẤT đề xuất #{prop_id}!", "success")
+
             else:
-                if not next_person:
+                # Nếu chọn người tiếp theo là BOD → chuyển cho BOD (sẽ là người cuối)
+                if next_person:
+                    selected_name = next_person.split(" - ")[0].strip()
+                    is_bod_next = any(
+                        info["name"] == selected_name and info["role"] == "BOD"
+                        for info in USERS.values()
+                    )
+
+                    if is_bod_next:
+                        c.execute("UPDATE proposals SET next_approver = ? WHERE id = ?", (next_person, prop_id))
+                        conn.commit()
+                        flash(f"Đã duyệt → Chuyển cho BOD: {selected_name} → Đây sẽ là người duyệt cuối cùng", "success")
+                    else:
+                        c.execute("UPDATE proposals SET next_approver = ? WHERE id = ?", (next_person, prop_id))
+                        conn.commit()
+                        flash(f"Đã duyệt → Chuyển tiếp cho: {selected_name}", "success")
+                else:
                     flash("Vui lòng chọn người phê duyệt tiếp theo!", "warning")
                     conn.close()
                     approvers = [f"{v['name']} - {v['department']}" for k, v in USERS.items() if v["role"] in ["Manager", "BOD"]]
-                    return render_template("approve_form.html", proposal=proposal, approvers=approvers, is_second_level=False)
-                c.execute("UPDATE proposals SET status = 'Chờ duyệt cấp 2', next_approver = ? WHERE id = ?", (next_person, prop_id))
-                conn.commit()
-                flash(f"Đã duyệt cấp 1 → Chuyển cho: {next_person.split('-')[0]}", "success")
+                    return render_template("approve_form.html", proposal=proposal, approvers=approvers, is_bod=(user["role"] == "BOD"))
+
         conn.close()
         return redirect(url_for("dashboard"))
 
-    conn.close()
+    # GET: hiển thị form
     approvers = [f"{v['name']} - {v['department']}" for k, v in USERS.items() if v["role"] in ["Manager", "BOD"]]
-    is_second = (status == "Chờ duyệt cấp 2" or next_approver)
-    return render_template("approve_form.html", proposal=proposal, approvers=approvers, is_second_level=is_second)
-
+    is_bod = (user["role"] == "BOD")
+    conn.close()
+    return render_template("approve_form.html", proposal=proposal, approvers=approvers, is_bod=is_bod)
 @app.route("/logout")
 def logout():
     session.clear()

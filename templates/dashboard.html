@@ -73,11 +73,14 @@
                 {% endif %}
             </td>
             <td>{{ p[7] }}</td>
-            <td style="background:#fff8e1; font-weight:bold; color:#e65100;">
+            <td style="background:#fff3e0; font-weight:bold; color:#d32f2f; padding:8px 12px;">
                 {% if p[14] %}
                     {{ p[14] }}
+                    {% if p[14].split(" - ")[0] in ["TRƯƠNG HUỆ KHƯƠNG", "NGUYỄN THỊ HUỆ"] %}
+                        <strong style="color:#c62828;">(BOD - Cuối cùng)</strong>
+                    {% endif %}
                 {% else %}
-                    <em style="color:#999;">Chưa chỉ định</em>
+                    {{ p[7] }} <em style="color:#666;">(đang duyệt đầu)</em>
                 {% endif %}
             </td>
             <td>
