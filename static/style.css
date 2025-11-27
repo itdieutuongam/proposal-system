@@ -48,5 +48,5 @@ button:hover { background: #a41017; }
     padding: 10px;
     border-radius: 5px;
 }
-.danger { background:#ffebee; color:#c62828; border:1px solid #ffcdd2; }
+.danger { background:#ffebee; color:#a41017; border:1px solid #ffcdd2; }
 .warning { background:#fff3e0; color:#ef6c00; border:1px solid #ffe0b2; }
