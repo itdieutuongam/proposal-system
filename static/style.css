@@ -1,7 +1,7 @@
 /* static/style.css */
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #a41017 0%, #ffffff 100%);
+    background: linear-gradient(135deg, #a41017 0%);
     height: 100vh;
     margin: 0;
     display: flex;
