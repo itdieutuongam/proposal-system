@@ -39,7 +39,7 @@
         </div>
 
         <!-- ==================== ĐỀ XUẤT TẠI TP. HỒ CHÍ MINH ==================== -->
-        {% set hcm_proposals = proposals|selectattr("4", "equalto", "HỒ CHÍ MINH")|list %}
+        {% set hcm_proposals = proposals|selectattr(4, "equalto", "HỒ CHÍ MINH")|list %}
         {% if hcm_proposals %}
         <h2 class="city">TP. HỒ CHÍ MINH ({{ hcm_proposals|length }} đề xuất)</h2>
         <table>

@@ -1,3 +1,4 @@
+<!-- FILE: templates/dashboard.html (ĐÃ SỬA ĐỂ HIỂN THỊ TỆP ĐÍNH KÈM) -->
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -6,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {font-family: Arial, sans-serif; background:#f5f5f5; margin:0; padding:20px;}
-        .container {max-width:1300px; margin:auto; background:white; padding:30px; border-radius:12px; box-shadow:0 0 20px rgba(0,0,0,0.1);}
+        .container {max-width:1400px; margin:auto; background:white; padding:30px; border-radius:12px; box-shadow:0 0 20px rgba(0,0,0,0.1);}
         h1 {color:#a41017; border-bottom:3px solid #a41017; padding-bottom:10px;}
         h2 {color:#d32f2f; margin-top:30px;}
         table {width:100%; border-collapse:collapse; margin:25px 0;}
@@ -21,6 +22,8 @@
         .approve:hover {background:#45a049;}
         .link {color:#a41017; text-decoration:none; font-weight:bold;}
         .link:hover {text-decoration:underline;}
+        .file-link {color:#a41017; text-decoration:underline; font-weight:bold;}
+        .file-link:hover {text-decoration:none;}
         .no-data {text-align:center; padding:50px; color:#666; font-size:19px;}
         .status-cho {color:#ff9800; font-weight:bold;}
         .status-cap2 {color:#e65100; font-weight:bold; background:#fff3e0; padding:4px 8px; border-radius:4px;}
@@ -51,6 +54,7 @@
             <th>Nguồn kinh phí</th>
             <th>Thành phố</th>
             <th>Tổng chi phí (VND)</th>
+            <th>Tệp đính kèm</th> <!-- CỘT MỚI -->
             <th>Người duyệt hiện tại</th>
             <th>Người duyệt tiếp theo</th>
             <th>Trạng thái</th>
@@ -70,6 +74,15 @@
                     {{ "{:,.0f}".format(p[13]) }}
                 {% else %}
                     —
+                {% endif %}
+            </td>
+            <td>
+                {% if p[12] %}
+                    <a href="{{ url_for('uploaded_file', filename=p[12]) }}" class="file-link" target="_blank">
+                        Xem tệp
+                    </a>
+                {% else %}
+                     —
                 {% endif %}
             </td>
             <td>{{ p[7] }}</td>
@@ -117,7 +130,6 @@
                 Tạo đề xuất mới ngay!
             </a>
         {% else %}
-            Không có đề xuất nào cần duyệt.
         {% endif %}
     </div>
     {% endif %}

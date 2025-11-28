@@ -2,132 +2,72 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Phê duyệt đề xuất #{{ proposal[0] }} - DTA SPACE</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phê duyệt đề xuất #{{ proposal[0] }}</title>
     <style>
-        body {font-family: 'Segoe UI', Arial, sans-serif; background:#f5f5f5; padding:30px;}
-        .box {max-width:960px; margin:auto; background:white; padding:40px; border-radius:16px; box-shadow:0 10px 40px rgba(0,0,0,0.12); border:1px solid #eee;}
-        h2 {color:#a41017; margin-top:0; font-size:28px; border-bottom:3px solid #a41017; padding-bottom:12px;}
-        .info {background:#f8fbff; padding:20px; border-radius:12px; margin:20px 0; border-left:5px solid #a41017;}
-        .info p {margin:12px 0; font-size:16px; line-height:1.6;}
-        label {font-weight:bold; color:#333; margin-top:15px; display:block;}
-        select, button {padding:14px; font-size:16px; margin:10px 0; border-radius:8px;}
-        select {width:100%; border:2px solid #ddd;}
-        .btn {
-            padding:16px 32px; border:none; border-radius:10px; color:white; cursor:pointer;
-            font-weight:bold; font-size:18px; margin:10px; min-width:200px; transition:all 0.3s;
-        }
-        .approve {background:#2e7d32;}
-        .approve:hover {background:#1b5e20; transform:translateY(-3px); box-shadow:0 8px 25px rgba(46,125,50,0.4);}
-        .reject {background:#c62828;}
-        .reject:hover {background:#b71c1c; transform:translateY(-3px); box-shadow:0 8px 25px rgba(198,40,40,0.4);}
-        .back {color:#a41017; text-decoration:none; font-weight:bold; font-size:17px;}
-        .back:hover {text-decoration:underline;}
-        .bod-notice {
-            background:#fff3e0; padding:18px; border-radius:10px; border-left:6px solid #ff9800;
-            margin:20px 0; font-weight:bold; color:#e65100; font-size:16px;
-        }
-        .file-link {
-            display:inline-flex; align-items:center; gap:8px; color:#a41017; font-weight:bold;
-            text-decoration:none; padding:8px 12px; background:#ffebee; border-radius:8px;
-            transition:all 0.3s;
-        }
-        .file-link:hover {
-            background:#ffcdd2; transform:scale(1.05); transform:translateY(-2px);
-            box-shadow:0 5px 15px rgba(0,0,0,0.1);
-        }
-        .bod-badge {
-            background:#1b5e20; color:white; padding:8px 16px; border-radius:50px;
-            font-size:14px; font-weight:bold; display:inline-block; margin-top:10px;
-        }
+        body {font-family: Arial; background:#f5f5f5; padding:30px;}
+        .box {max-width:900px; margin:auto; background:white; padding:35px; border-radius:12px; box-shadow:0 0 20px rgba(0,0,0,0.1);}
+        h2 {color:#a41017; margin-top:0;}
+        .info {background:#f8fbff; padding:15px; border-radius:8px; margin:15px 0;}
+        label {font-weight:bold; color:#333;}
+        select, button {padding:12px; font-size:16px; margin:10px 0;}
+        .btn {padding:14px 28px; border:none; border-radius:8px; color:white; cursor:pointer; font-weight:bold;}
+        .approve {background:#4caf50;}
+        .reject {background:#f44336;}
+        .back {color:#a41017; text-decoration:none; font-size:16px;}
+        .bod-notice {background:#fff3e0; padding:15px; border-left:5px solid #ff9800; margin:15px 0; font-weight:bold;}
     </style>
 </head>
 <body>
 <div class="box">
-    <h2>PHÊ DUYỆT ĐỀ XUẤT #{{ proposal[0] }}</h2>
-
+    <h2>Phê duyệt đề xuất #{{ proposal[0] }}</h2>
     <div class="info">
         <p><strong>Tiêu đề:</strong> {{ proposal[1] }}</p>
-        <p><strong>Người lập:</strong> {{ proposal[9] }} <span style="color:#666;">({{ proposal[3] }})</span></p>
-        <p><strong>Phòng ban:</strong> {{ proposal[3] }} | <strong>Thành phố:</strong> <span style="color:#d32f2f;font-weight:bold;">{{ proposal[4] or "—" }}</span></p>
+        <p><strong>Người lập:</strong> {{ proposal[9] }} ({{ proposal[3] }})</p>
         <p><strong>Ngày lập:</strong> {{ proposal[10] }}</p>
         <p><strong>Nguồn kinh phí:</strong> {{ proposal[6] or "—" }}</p>
         <p><strong>Tổng chi phí:</strong> 
-            <span style="font-size:20px; color:#a41017; font-weight:bold;">
-                {% if proposal[13] > 0 %}
-                    {{ "{:,.0f}".format(proposal[13]) }} VND
-                {% else %}
-                    —
-                {% endif %}
-            </span>
+            {% if proposal[13] > 0 %}{{ "{:,.0f}".format(proposal[13]) }} VND{% else %}—{% endif %}
         </p>
-
-        <!-- FILE ĐÍNH KÈM - HIỂN THỊ ĐẸP CHO MỌI NGƯỜI XEM -->
-        <p><strong>Tệp đính kèm:</strong>
-            {% if proposal[12] %}
-                <a href="{{ url_for('uploaded_file', filename=proposal[12]) }}" 
-                   target="_blank" class="file-link">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a41017" stroke-width="2.5">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="12" y1="18" x2="12" y2="12"></line>
-                        <line x1="9" y1="15" x2="15" y2="15"></line>
-                    </svg>
-                    Xem tệp: {{ proposal[12].split('_', 2)[-1] | default(proposal[12], true) }}
-                </a>
-            {% else %}
-                <span style="color:#888; font-style:italic;">— Không có tệp đính kèm —</span>
-            {% endif %}
-        </p>
-
         <p><strong>Trạng thái hiện tại:</strong> 
-            <span style="color:#ff9800; font-weight:bold; background:#fff3e0; padding:6px 12px; border-radius:6px;">
-                {% if proposal[11] == 'Đã duyệt' %}ĐÃ DUYỆT HOÀN TẤT
-                {% elif proposal[11] == 'Từ chối' %}BỊ TỪ CHỐI
-                {% else %}Chờ duyệt{% if proposal[14] %} cấp 2{% endif %}{% endif %}
-            </span>
+            <span style="color:#ff9800; font-weight:bold;">Chờ duyệt</span>
         </p>
     </div>
 
-    <!-- THÔNG BÁO ĐẶC BIỆT CHO BOD -->
-    {% if is_bod %}
-        <div style="background:#e8f5e9; padding:22px; border-radius:12px; text-align:center; border:3px solid #4caf50; margin:25px 0;">
-            <div class="bod-badge">BẠN LÀ THÀNH VIÊN HỘI ĐỒNG QUẢN TRỊ (BOD)</div>
-            <p style="margin:15px 0 0; font-size:18px; color:#1b5e20;">
-                Sau khi bạn <strong>DUYỆT</strong> → Đề xuất sẽ được <strong>HOÀN TẤT NGAY LẬP TỨC</strong>
-            </p>
-        </div>
-    {% else %}
-        <label>Chọn người phê duyệt tiếp theo <span style="color:red;">*</span>:</label>
-        <select name="next_approver" required>
-            <option value="" disabled selected>-- Chọn người tiếp theo --</option>
-            {% for a in approvers %}
-            <option value="{{ a }}">{{ a }}
-                {% if a.split(" - ")[0] in ["TRƯƠNG HUỆ KHƯƠNG", "NGUYỄN THỊ HỒNG TUYẾT"] %}
-                    → BOD - Duyệt cuối cùng
-                {% endif %}
-            </option>
-            {% endfor %}
-        </select>
-
-        <div class="bod-notice">
-            Nếu bạn chọn <strong>BOD</strong> → BOD sẽ là người duyệt cuối cùng<br>
-            Sau khi BOD duyệt → đề xuất tự động chuyển thành <strong>"Đã duyệt"</strong>
-        </div>
-    {% endif %}
-
     <form method="POST">
-        <div style="text-align:center; margin:40px 0;">
-            <button type="submit" name="decision" value="approve" class="btn approve">
-                {% if is_bod %}DUYỆT HOÀN TẤT (BOD){% else %}DUYỆT & CHUYỂN TIẾP{% endif %}
+        {% if is_bod %}
+            <div style="background:#e8f5e9; padding:18px; border-radius:8px; margin:20px 0; text-align:center; border:2px solid #4caf50;">
+                <strong style="color:#2e7d32; font-size:20px;">BẠN LÀ BOD</strong><br>
+                <span style="font-size:16px;">Sau khi bạn duyệt → Đề xuất sẽ được HOÀN TẤT ngay lập tức</span>
+            </div>
+        {% else %}
+            <label>Chọn người phê duyệt tiếp theo <span style="color:red;">*</span>:</label>
+            <select name="next_approver" required style="width:100%; padding:12px; font-size:16px;">
+                <option value="" disabled selected>-- Chọn người tiếp theo --</option>
+                {% for a in approvers %}
+                <option value="{{ a }}">{{ a }}
+                    {% if a.split(" - ")[0] in ["TRƯƠNG HUỆ KHƯƠNG", "NGUYỄN THỊ HUỆ"] %}
+                         (BOD - Người duyệt cuối cùng)
+                    {% endif %}
+                </option>
+                {% endfor %}
+            </select>
+            <div class="bod-notice">
+                Nếu bạn chọn BOD → BOD sẽ là người duyệt cuối cùng<br>
+                Sau khi BOD duyệt → đề xuất tự động thành "Đã duyệt"
+            </div>
+        {% endif %}
+
+        <div style="margin-top:30px; text-align:center;">
+            <button type="submit" name="decision" value="approve" class="btn approve" style="font-size:18px; padding:16px 40px;">
+                {% if is_bod %}DUYỆT HOÀN TẤT (BOD){% else %}Duyệt & Chuyển tiếp{% endif %}
             </button>
-            <button type="submit" name="decision" value="reject" class="btn reject">
+            <button type="submit" name="decision" value="reject" class="btn reject" style="font-size:18px; padding:16px 40px;">
                 Từ chối đề xuất
             </button>
         </div>
     </form>
 
-    <hr style="border:1px dashed #ddd; margin:50px 0;">
+    <hr style="margin:40px 0;">
     <div style="text-align:center;">
         <a href="{{ url_for('dashboard') }}" class="back">Quay lại trang chủ</a>
     </div>
