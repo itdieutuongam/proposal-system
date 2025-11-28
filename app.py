@@ -64,10 +64,9 @@ USERS = {
 
     # ==================== PHÒNG KINH DOANH HCM ====================
     "xuanhoa@dieutuongam.com":      {"name": "LÊ XUÂN HOA",                 "role": "Manager",   "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
-    "xuanhoa@dieutuongam.com":      {"name": "Trần Thoại Nhã",                 "role": "Manager",   "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
     "salesadmin@dieutuongam.com":   {"name": "NGUYỄN DUY ANH",              "role": "Employee",  "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
     "kho@dieutuongam.com":          {"name": "HUỲNH MINH TOÀN",             "role": "Employee",  "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
-    "thoainha@dieutuongam.com":     {"name": "TRẦN THOẠI NHÃ",              "role": "Employee",  "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
+    "thoainha@dieutuongam.com":     {"name": "TRẦN THOẠI NHÃ",              "role": "Manager",  "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
     "thanhtuan.dta@gmail.com":      {"name": "BÀNH THANH TUẤN",             "role": "Employee",  "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
     "thientinh.dta@gmail.com":      {"name": "BÙI THIỆN TÌNH",              "role": "Employee",  "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
     "giathanh.dta@gmail.com":       {"name": "NGÔ GIA THÀNH",               "role": "Employee",  "department": "PHÒNG KINH DOANH HCM",                  "password": "123456"},
