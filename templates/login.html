@@ -5,131 +5,132 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập - Hệ thống Đề xuất DTA SPACE</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin:0; padding:0; box-sizing:border-box; }
         body {
-            font-family: 'Times New Roman', Times, serif;
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 600;
             background: linear-gradient(135deg, #8B0000 0%, #A41017 50%, #C41E3A 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px 20px 40px;
+            padding: 20px;
             color: #fff;
         }
 
-        /* LOGO NẰM HOÀN TOÀN TRÊN NỀN ĐỎ */
         .logo-red {
             width: 190px;
-            margin-bottom: 30px;                /* khoảng cách xuống thẻ trắng */
-            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.7));
-            z-index: 10;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.7));
         }
 
-        /* THẺ NỀN TRẮNG CHỈ CHỨA TIÊU ĐỀ + FORM */
+        /* THẺ NỀN TRẮNG ĐÃ ĐƯỢC THU GỌN */
         .card {
-            background: #ffffff;
-            color: #333;
-            width: 520px;
-            max-width: 96%;
-            border-radius: 35px;
-            border: 8px solid #FFD700;
+            background: #fff;
+            width: 460px;                  /* giảm từ 570px → 460px */
+            max-width: 92%;
+            border-radius: 36px;
+            border: 9px solid #FFD700;     /* viền vàng mỏng bớt */
+            padding: 44px 40px 50px;       /* giảm padding đáng kể */
             box-shadow: 0 30px 80px rgba(0,0,0,0.75);
-            padding: 60px 50px 50px;
             text-align: center;
         }
 
-        /* TIÊU ĐỀ - CÙNG PHÔNG, CÙNG KIỂU ĐẬM */
-        .title {
-            line-height: 1.2;
-            margin-bottom: 40px;
-        }
-        .title-1 {
-            font-size: 40px;
+        .title-wrapper { margin-bottom: 34px; }
+
+        .title-1, .title-2 {
+            white-space: nowrap;
             font-weight: 900;
-            color: #8B0000;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 3px 3px 8px rgba(0,0,0,0.3);
-            white-space: nowrap;            /* không bao giờ xuống hàng */
-        }
-        .title-2 {
-            font-size: 56px;
-            font-weight: 900;
-            color: #A41017;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            text-shadow: 4px 4px 10px rgba(0,0,0,0.4);
-            margin-top: 10px;
+            text-shadow: 3px 3px 8px rgba(0,0,0,0.35);
+            margin: 0;
         }
 
-        /* FORM */
+        .title-1 {
+            font-size: 36px;
+            color: #8B0000;
+            letter-spacing: 3.6px;
+            position: relative;
+            left: 10px;
+        }
+
+        .title-2 {
+            font-size: 52px;
+            color: #A41017;
+            letter-spacing: 4.2px;
+            margin-top: 8px;
+        }
+
         .form-group {
-            margin: 30px 0;
+            margin: 26px 0;           /* giảm margin giữa các field */
             text-align: left;
         }
+
         label {
             display: block;
             margin-bottom: 10px;
             color: #5a0000;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 18px;
         }
+
         input[type="email"],
         input[type="password"] {
             width: 100%;
-            padding: 17px 20px;
+            padding: 18px 22px;       /* giảm padding input */
             border: 2px solid #ddd;
-            border-radius: 14px;
-            font-size: 16px;
-            transition: all 0.3s;
+            border-radius: 16px;
+            font-size: 17px;
         }
+
         input:focus {
             outline: none;
             border-color: #A41017;
-            box-shadow: 0 0 0 5px rgba(164,16,23,0.18);
+            box-shadow: 0 0 0 6px rgba(164,16,23,0.2);
         }
 
         button {
             width: 100%;
-            padding: 19px;
+            padding: 20px;
             background: #8B0000;
             color: white;
             border: none;
             border-radius: 50px;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
+            margin-top: 20px;
+            box-shadow: 0 14px 32px rgba(139,0,0,0.6);
+            transition: all .35s;
             cursor: pointer;
-            margin-top: 25px;
-            box-shadow: 0 12px 28px rgba(139,0,0,0.5);
-            transition: all 0.3s;
         }
+
         button:hover {
             background: #A41017;
             transform: translateY(-6px);
-            box-shadow: 0 20px 40px rgba(139,0,0,0.65);
+            box-shadow: 0 22px 46px rgba(139,0,0,0.75);
         }
 
         .footer {
-            margin-top: 50px;
-            font-size: 14px;
+            margin-top: 44px;
+            font-size: 15px;
             color: #888;
-            line-height: 1.6;
         }
+
         .footer strong { color: #A41017; }
 
-        /* Mobile */
+        /* Responsive mobile */
         @media (max-width: 480px) {
-            .logo-red { width: 150px; margin-bottom: 25px; }
             .card {
                 width: 100%;
-                padding: 50px 30px 45px;
-                border-width: 6px;
-                border-radius: 28px;
+                max-width: 96%;
+                padding: 40px 30px;
+                border-width: 8px;
             }
-            .title-1 { font-size: 32px; }
-            .title-2 { font-size: 44px; }
-            button { font-size: 22px; padding: 17px; }
+            .title-1 { font-size: 34px; }
+            .title-2 { font-size: 48px; }
+            .logo-red { width: 160px; }
+            button { font-size: 24px; padding: 18px; }
         }
     </style>
 </head>
@@ -140,8 +141,8 @@
 
     <!-- THẺ NỀN TRẮNG -->
     <div class="card">
-        <div class="title">
-            <div class="title-1">HỆ THỐNG ĐỀ XUẤT</div>
+        <div class="title-wrapper">
+            <div class="title-1">HỆ THỐNG</div>
             <div class="title-2">DTA SPACE</div>
         </div>
 
