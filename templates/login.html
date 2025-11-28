@@ -1,28 +1,176 @@
-<!-- templates/login.html -->
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Đăng nhập - DTA SPACE</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Hệ thống Đề xuất DTA SPACE</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background: linear-gradient(135deg, #8B0000 0%, #A41017 50%, #C41E3A 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 20px 40px;
+            color: #fff;
+        }
+
+        /* LOGO NẰM HOÀN TOÀN TRÊN NỀN ĐỎ */
+        .logo-red {
+            width: 190px;
+            margin-bottom: 30px;                /* khoảng cách xuống thẻ trắng */
+            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.7));
+            z-index: 10;
+        }
+
+        /* THẺ NỀN TRẮNG CHỈ CHỨA TIÊU ĐỀ + FORM */
+        .card {
+            background: #ffffff;
+            color: #333;
+            width: 520px;
+            max-width: 96%;
+            border-radius: 35px;
+            border: 8px solid #FFD700;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.75);
+            padding: 60px 50px 50px;
+            text-align: center;
+        }
+
+        /* TIÊU ĐỀ - CÙNG PHÔNG, CÙNG KIỂU ĐẬM */
+        .title {
+            line-height: 1.2;
+            margin-bottom: 40px;
+        }
+        .title-1 {
+            font-size: 40px;
+            font-weight: 900;
+            color: #8B0000;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+            white-space: nowrap;            /* không bao giờ xuống hàng */
+        }
+        .title-2 {
+            font-size: 56px;
+            font-weight: 900;
+            color: #A41017;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 4px 4px 10px rgba(0,0,0,0.4);
+            margin-top: 10px;
+        }
+
+        /* FORM */
+        .form-group {
+            margin: 30px 0;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #5a0000;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 17px 20px;
+            border: 2px solid #ddd;
+            border-radius: 14px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #A41017;
+            box-shadow: 0 0 0 5px rgba(164,16,23,0.18);
+        }
+
+        button {
+            width: 100%;
+            padding: 19px;
+            background: #8B0000;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 25px;
+            box-shadow: 0 12px 28px rgba(139,0,0,0.5);
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #A41017;
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(139,0,0,0.65);
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 14px;
+            color: #888;
+            line-height: 1.6;
+        }
+        .footer strong { color: #A41017; }
+
+        /* Mobile */
+        @media (max-width: 480px) {
+            .logo-red { width: 150px; margin-bottom: 25px; }
+            .card {
+                width: 100%;
+                padding: 50px 30px 45px;
+                border-width: 6px;
+                border-radius: 28px;
+            }
+            .title-1 { font-size: 32px; }
+            .title-2 { font-size: 44px; }
+            button { font-size: 22px; padding: 17px; }
+        }
+    </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>HỆ THỐNG ĐỀ XUẤT<br>DTA SPACE</h2>
+
+    <!-- LOGO NẰM HOÀN TOÀN TRÊN NỀN ĐỎ -->
+    <img src="{{ url_for('static', filename='images/logo-dta.png') }}" alt="Diệu Tướng Am" class="logo-red">
+
+    <!-- THẺ NỀN TRẮNG -->
+    <div class="card">
+        <div class="title">
+            <div class="title-1">HỆ THỐNG ĐỀ XUẤT</div>
+            <div class="title-2">DTA SPACE</div>
+        </div>
+
         {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            <div class="alert">
-              {% for category, message in messages %}
-                <p class="{{ category }}">{{ message }}</p>
-              {% endfor %}
-            </div>
-          {% endif %}
+            {% if messages %}
+                <div style="background:#ffebee;color:#c62828;padding:16px;border-radius:14px;margin:25px 0;border-left:6px solid #e53935;font-weight:bold;">
+                    {% for category, message in messages %}{{ message }}<br>{% endfor %}
+                </div>
+            {% endif %}
         {% endwith %}
+
         <form method="POST">
-            <input type="email" name="email" placeholder="Email công ty" required autofocus>
-            <input type="password" name="password" placeholder="Mật khẩu" required>
-            <button type="submit">Đăng nhập</button>
+            <div class="form-group">
+                <label for="email">Email công ty</label>
+                <input type="email" name="email" id="email" placeholder="nhập email của bạn" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mật khẩu</label>
+                <input type="password" name="password" id="password" placeholder="nhập mật khẩu" required>
+            </div>
+
+            <button type="submit">ĐĂNG NHẬP</button>
         </form>
+
+        <div class="footer">
+            © 2025 <strong>Diệu Tướng Am</strong> - Công ty CP DTA SPACE<br>
+        </div>
     </div>
+
 </body>
 </html>
