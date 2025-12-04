@@ -1,3 +1,4 @@
+
 # app.py - PHIÊN BẢN CUỐI CÙNG - DUYỆT 2 CẤP HOÀN HẢO
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory
 from functools import wraps
@@ -53,7 +54,7 @@ USERS = {
      "hongtuyet@dieutuongam.com": {"name": "NGUYỄN THỊ HỒNG TUYẾT", "role": "BOD", "department": "BOD", "password": "123456"},
 
     # ==================== PHÒNG HCNS-IT ====================
-    "it@dieutuongam.com":           {"name": "TRẦN CÔNG KHÁNH",             "role": "Manager",   "department": "PHÒNG HCNS-IT",                         "password": "123456"},
+    "it@dieutuongam.com":           {"name": "TRẦN CÔNG KHÁNH",             "role": "Employee",   "department": "PHÒNG HCNS-IT",                         "password": "123456"},
     "anthanh@dieutuongam.com":      {"name": "NGUYỄN THỊ AN THANH",         "role": "Manager",   "department": "PHÒNG HCNS-IT",                         "password": "123456"},
     "hcns@dieutuongam.com":         {"name": "NHÂN SỰ DTA",                 "role": "Employee",  "department": "PHÒNG HCNS-IT",                         "password": "123456"},
     "yennhi@dieutuongam.com":       {"name": "TRẦN NGỌC YẾN NHI",           "role": "Employee",  "department": "PHÒNG HCNS-IT",                         "password": "123456"},
@@ -117,25 +118,67 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/")
+def index():
+    if "user" in session:
+        return redirect(url_for("dashboard"))
+    return redirect(url_for("login"))
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == "GET":
-        session.clear()
+    if "user" in session:
+        return redirect(url_for("dashboard"))
+
     if request.method == "POST":
-        email = request.form.get("email", "").strip().lower()
-        password = request.form.get("password", "")
-        user = USERS.get(email)
-        if user and user["password"] == password:
+        email = request.form["email"].strip().lower()
+        password = request.form["password"]
+        user_data = USERS.get(email)
+
+        if user_data and user_data["password"] == password:
             session["user"] = {
                 "email": email,
-                "name": user["name"],
-                "role": user["role"],
-                "department": user["department"]
+                "name": user_data["name"],
+                "role": user_data["role"],
+                "department": user_data["department"]
             }
-            flash(f"Đăng nhập thành công! Chào {user['name']}", "success")
+            if password == "123456":
+                flash("Lần đầu đăng nhập – Vui lòng đổi mật khẩu để tiếp tục!", "warning")
+                return redirect(url_for("change_password"))
+            flash(f"Chào mừng {user_data['name']}!", "success")
             return redirect(url_for("dashboard"))
-        flash("Email hoặc mật khẩu không đúng!", "danger")
+        else:
+            flash("Sai email hoặc mật khẩu!", "danger")
+
     return render_template("login.html")
+
+@app.route("/change_password", methods=["GET", "POST"])
+def change_password():
+    if "user" not in session:
+        return redirect(url_for("login"))
+
+    user = session["user"]
+    user_email = user["email"]
+
+    if request.method == "POST":
+        old = request.form["old_password"]
+        new = request.form["new_password"]
+        confirm = request.form["confirm_password"]
+
+        if USERS[user_email]["password"] != old:
+            flash("Mật khẩu cũ không đúng!", "danger")
+        elif new != confirm:
+            flash("Mật khẩu mới không khớp!", "danger")
+        elif len(new) < 6:
+            flash("Mật khẩu phải từ 6 ký tự trở lên!", "danger")
+        elif new == old:
+            flash("Mật khẩu mới không được trùng mật khẩu cũ!", "danger")
+        else:
+            USERS[user_email]["password"] = new
+            flash("Đổi mật khẩu thành công! Vui lòng đăng nhập lại.", "success")
+            session.clear()
+            return redirect(url_for("login"))
+
+    return render_template("change_password.html", user=user)
 
 @app.route("/dashboard")
 @login_required
@@ -301,6 +344,7 @@ def approve(prop_id):
     is_bod = (user["role"] == "BOD")
     conn.close()
     return render_template("approve_form.html", proposal=proposal, approvers=approvers, is_bod=is_bod)
+
 @app.route("/logout")
 def logout():
     session.clear()
